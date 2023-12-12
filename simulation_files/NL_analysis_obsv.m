@@ -4,20 +4,18 @@
 %    email                : rachelenebbia <at> gmail <dot> com
 
 %%Description: Script to study observability of nonlinear system with filtration method
+%%we take into consideration three case --> 3rd one is of interest 
 %% OBSERVABILITY ANALYSIS NON LIN SYS
-´
+
 %Load setup file
 run init.m
-
-% creation of system in state affine control form
-% state vector
+%Variabes
 syms x dx theta dtheta y dy  phi real 
 % Parameters
 syms mu_x mu_y l M grav J T dphi real
-
+% creation of system in state affine control form state vector
 q = [x dx theta dtheta y dy phi]';
 u = [T, dphi]; %inputs
-
 f = [   
 	dx;
     (M^-1)*(-mu_x*dx);
@@ -45,10 +43,7 @@ g2 = [
 	0;
 	1];
 
-% %% 1° case:
-% % definition of outputs  
-% h1 = 0.5*(x^2+y^2);
-% h2 = theta;
+%%1° case --> definition of outputs  h1 = 0.5*(x^2+y^2), h2 = theta;
 % %Initialization of steps
 % dh1 = jacobian(h1,q); 
 % dh2 = jacobian(h2,q);
@@ -58,10 +53,8 @@ g2 = [
 % q0 = zeros(7,1); 
 % r{1} = rank(omega_mat);
 
-%% 2° case:
-% definition of outputs
-% h = [theta; dtheta; y];
-% %Initialization of steps
+%%2° case --> definition of outputs h = [theta; dtheta; y];
+%Initialization of steps
 % dh1 = jacobian(h(1),q); 
 % dh2 = jacobian(h(2),q); 
 % dh3 = jacobian(h(3),q);
@@ -71,7 +64,7 @@ g2 = [
 % q0 = zeros(7,1); 
 % r{1} = rank(omega_mat);
 
-% %% 3° case:
+%%3° case:
 % % definition of outputs  
 h1 = y;
 h2 = theta;
@@ -88,6 +81,7 @@ r{1} = rank(omega_mat);
 k=1;
 tol = n_sys;
 omega_mat_prec = zeros(size(omega_mat));
+%start loop
 while k<tol
     [omega,omega_mat,r{k+1}] = filtration(omega, omega_mat, delta, q);
     omega_mat_num = subs(omega_mat, {q(1) q(2) q(3) q(4) q(5) q(6) q(7)}, {zeros(1,7)});
@@ -104,9 +98,7 @@ while k<tol
 end
 omega_mat = simplify(omega_mat);
 
-% With outputs h1 = 0.5*(x^2+y^2) and h2 = theta, the system will be
-% totally observable (rank(omega_mat) = 7).
-
+% With outputs h1 = 0.5*(x^2+y^2) and h2 = theta, the system will be totally observable (rank(omega_mat) = 7).
 
 %Filtration
 function [omega,omega_mat,r] = filtration(omega_in,omega_mat_in,delta_in,q)
@@ -128,13 +120,13 @@ function [omega,omega_mat,r] = filtration(omega_in,omega_mat_in,delta_in,q)
     end
 end
 
-
-
+%%---------FUNCTIONS--------%%
+% Lie-Bracket function
 function Lvw = lie_b(w,v,q)
     Lvw = v'*jacobian(w',q)' + w*jacobian(v,q);
 end
 
-
+% Check if a vector is empty
 function ret = is_zero(vect)
 	ret = 1;
 	for bla = 1:length(vect)

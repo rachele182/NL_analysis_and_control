@@ -1,16 +1,23 @@
+%    begin                : November 2020
+%    authors              : Rachele Nebbia Colomba, Chiara Sammarco, Giorgio Simonini
+%    copyright            : Dipartimento di Ingegneria dell`Informazione (DII) Universita´ di pisa    
+%    email                : rachelenebbia <at> gmail <dot> com
+
+%%Description: Script to study the indentifcability of friction coefficient trough observability analysis
+
+%Load setup workspace file 
 run init.m
 
-
-% creation of system in state affine control form
-% state vector
+%% Start analysiy
+% Variables
 syms x dx theta dtheta y dy  phi real 
 % Parameters
 syms mu_x mu_y l M grav J T dphi real
 
+% System model: state-affine control form
 q = [x dx theta dtheta y dy phi mu_x mu_y]';
 u = [T, dphi]; %inputs
 n_sys = size(q,1);
-
 f = [   
 	dx;
     (M^-1)*(-mu_x*dx);
@@ -21,7 +28,6 @@ f = [
     0;
     0;
     0]; 
-
 g1 = [
 	0;
     -(M^-1)*sin(theta+phi);
@@ -32,7 +38,6 @@ g1 = [
     0;
     0;
     0];
-
 g2 = [
 	0;
 	0;
@@ -43,7 +48,6 @@ g2 = [
 	1;
     0;
     0];
-
 
 %% 1° case:
 % definition of outputs  
@@ -56,8 +60,7 @@ delta = {f, g1, g2};
 omega = {dh1, dh2};
 omega_mat = [dh1; dh2];
 q0 = [0; 0; 0; 0; 0; 0; 0; 0; 0]; 
-r{1} = rank(omega_mat);
-
+r{1} = rank(omega_mat); %calculate rank of matriy 
 
 %% iterative filtration method
 k=1;
@@ -80,9 +83,7 @@ while k<tol
 end
 omega_mat = simplify(omega_mat);
 
-
-
-%% Utils
+%%---------FUNCTIONS--------%%
 %Filtration
 function [omega,omega_mat,r] = filtration(omega_in,omega_mat_in,delta_in,q)
     omega_mat = omega_mat_in;
@@ -102,14 +103,11 @@ function [omega,omega_mat,r] = filtration(omega_in,omega_mat_in,delta_in,q)
         end
     end
 end
-
-
-
+%Lie-brackett function
 function Lvw = lie_b(w,v,q)
     Lvw = v'*jacobian(w',q)' + w*jacobian(v,q);
 end
-
-
+%Check if vector is empty
 function ret = is_zero(vect)
 	ret = 1;
 	for bla = 1:length(vect)

@@ -1,16 +1,21 @@
-%% COMPLETE FEEDBACK LINEARIZATION
+%    begin                : November 2020
+%    authors              : Rachele Nebbia Colomba, Chiara Sammarco, Giorgio Simonini
+%    copyright            : Dipartimento di Ingegneria dell`Informazione (DII) Universita´ di pisa    
+%    email                : rachelenebbia <at> gmail <dot> com
 
+%%Description: Script to verify if the system is feedback-linearizable
+%              Input-Output FB linearization 
+
+% Load setup workspace file 
 run init.m
-
 % Variables
 syms x dx theta dtheta y dy T phi real 
 % Parameters
 syms mu_x mu_y l M grav J dphi real
 
+% System model: state-affine control form
 q = [x dx theta dtheta y dy phi]';
-% Inputs
 u = [T,dphi];
-
 f = [   
 	dx;
     (M^-1)*(-mu_x*dx);
@@ -18,8 +23,7 @@ f = [
     0;
     dy;
     M^-1*( - mu_y*dy -M*grav);
-    0]; 
-   
+    0];   
 g1 = [0 0 0 0 0 0 1]';
 g2 = [	0;
   		M^-1*(-sin(theta+phi));
@@ -35,22 +39,20 @@ g = [g1 , g2];
 h1 = y;
 h2 = theta;
 h = [h1; h2];
-%% Check conditions to have complete feedback linearization for MIMO systems
 
+%% Check conditions to have complete feedback linearization for MIMO systems wit
 % CONDITION : singularity + involutive
-
 k=1;
 tol = n_sys;
 n_in = size(g,2);
 gamma = {g1, g2};
 gamma_mat = [g1, g2];
 cond = true;
+%contruct gamma matriy for involutive check
 while k < n_sys
 	[gamma, gamma_mat] = filtr_feed(gamma, gamma_mat, f, q, n_in);
-
 	gamma_mat = simplify(gamma_mat);
 	r = rank(gamma_mat);
-
 	% singularity check
 	gamma_mat_num = subs(gamma_mat,{x dx theta dtheta y dy phi},{zeros(1,7)});
 	r_num = rank(gamma_mat_num);
@@ -58,7 +60,6 @@ while k < n_sys
 		cond = false;
 		fprintf("gamma singular on step: %i\n", k)
 	end
-
 	% involutivity check
     if k>1
         invol_mat=[];
@@ -88,9 +89,6 @@ if cond == true
 	end
 end
 
-
-
-
 %% Feedback Linearization Input-Output
 
 % derivative series
@@ -98,16 +96,15 @@ lg1lfh1 = dederni(h1, g1, q);
 lg2lfh1 = dederni(h1, g2, q);
 lg1lfh2 = dederni(h2, g1, q);
 lg2lfh2 = dederni(h2, g2, q);
-
 index = 1;
 y1{1} = dederni(h1, f, q);
+
 while lg1lfh1 == 0 && lg2lfh1 == 0 
     y1{index+1} = dederni(y1{index}, f, q);
     lg1lfh1 = dederni(y1{index}, g1, q);
     lg2lfh1 = dederni(y1{index}, g2, q);
     index = index + 1;
 end
-
 index = 1;
 y2{1} = dederni(h2, f, q);
 while lg1lfh2 == 0 && lg2lfh2 == 0
@@ -119,14 +116,12 @@ end
 
 r1 = size(y1,2);
 r2 = size(y2,2);
-
 Gamma = [y1{r1}; y2{r2}];
 E = [lg1lfh1, lg2lfh1;
      lg2lfh2, lg2lfh2]
-
 E_num = subs(E, {x dx theta dtheta y dy phi},{zeros(1,7)})
-
 r_tot = r1 + r2;
+
 if det(E_num) ~= 0
     fprintf('the relative degree is: %i\n', r_tot)
     if r_tot == n_sys
@@ -139,15 +134,8 @@ else
 end
 
 
-
-
-
-
-
-
-
-%% Functions
-
+%%---------FUNCTIONS--------%%
+% compute matrix
 function [gamma,gamma_mat] = filtr_feed(gamma_in, gamma_mat_in, f, q, n_in)
     gamma_mat = gamma_mat_in;
     gamma = gamma_in;
@@ -160,8 +148,7 @@ function [gamma,gamma_mat] = filtr_feed(gamma_in, gamma_mat_in, f, q, n_in)
 		index = index + 1;
 	end
 end
-
-
+%Lie-brackett function
 function Lgf = lie_b(g,f,q)
     Lgf = jacobian(f,q)*g - jacobian(g,q)*f;
 end
