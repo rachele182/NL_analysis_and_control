@@ -1,36 +1,36 @@
+%    begin                : November 2020
+%    authors              : Rachele Nebbia Colomba, Chiara Sammarco, Giorgio Simonini
+%    copyright            : Dipartimento di Ingegneria dell`Informazione (DII) Universita´ di pisa    
+%    email                : rachelenebbia <at> gmail <dot> com
+
+%%Description: Script to study controllability of non.linear system with filtration method
 %% CONTROLLABILITY ANALYSIS FOR NON LIN SYS
 
+% Load setup file
 run init.m
-
-% creation of system in state affine control form
-% state vector
+% Variables
 syms x dx theta dtheta y dy T phi real 
 % Parameters
 syms mu_x mu_y l M grav J dphi real
 
+% creation of system in state affine control form state vector
 q = [x dx theta dtheta y dy phi]';
-
 f = [   dx;
         M^-1*(-T*sin(theta+phi) - mu_x*dx);
         dtheta;
         J^-1*(-T*l*sin(phi));
         dy;
         M^-1*(T*cos(theta+phi) - mu_y*dy -M*grav);
-        0]; 
-    
-% u = dphi;
+        0];     
 u = [dphi];
-
 g = [0 0 0 0 0 0 1]';
-
 
 %% Substitute parameters values in delta
 % f = subs(f,{mu_x mu_y l M grav J T},{mu_x_par mu_y_par l_par M_par g_par J_par T_par{);
 
-
-%% filtration method for non-lin sys
+%% Filtration method for non-lin sys
 % this method demonstrates the small-time local accessibility of NON-LIN sys; 
-% delta_0 = span{g}; delta = span{f,g}; delta_1 =  delta_0 + [delta_0,delta];
+%delta_0 = span{g}; delta = span{f,g}; delta_1 =  delta_0 + [delta_0,delta];
 % [delta_0,delta] = Lgf ....
 
 % initialization
@@ -79,11 +79,13 @@ function [delta_lb,delta_mat,r] = filtration(delta_lb_in,delta_mat_in,delta_in,q
     end
 end
 
-
+%%---------FUNCTIONS--------%%
+% Lie-Bracket function
 function Lgf = lie_b(g,f,q)
     Lgf = jacobian(f,q)*g - jacobian(g,q)*f;
 end
 
+% Check if a vector is empty
 function ret = is_zero(vect)
 	ret = 1;
 	for bla = 1:length(vect)

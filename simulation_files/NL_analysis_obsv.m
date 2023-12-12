@@ -1,5 +1,12 @@
-%%  OBSERVABILITY ANALYSIS FOR NON LIN SYS
+%    begin                : November 2020
+%    authors              : Rachele Nebbia Colomba, Chiara Sammarco, Giorgio Simonini
+%    copyright            : Dipartimento di Ingegneria dell`Informazione (DII) Universita´ di pisa    
+%    email                : rachelenebbia <at> gmail <dot> com
 
+%%Description: Script to study observability of nonlinear system with filtration method
+%% OBSERVABILITY ANALYSIS NON LIN SYS
+´
+%Load setup file
 run init.m
 
 % creation of system in state affine control form
