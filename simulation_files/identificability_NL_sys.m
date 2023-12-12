@@ -8,7 +8,7 @@
 %Load setup workspace file 
 run init.m
 
-%% Start analysiy
+%% Start analysis
 % Variables
 syms x dx theta dtheta y dy  phi real 
 % Parameters
