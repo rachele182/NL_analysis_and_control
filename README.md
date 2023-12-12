@@ -12,8 +12,8 @@ In the figure below you can see a schematic rapresentation of a generic rocket, 
 
 ![rocket](https://github.com/rachele182/NL_analysis_and_control/assets/75611841/71f22c5d-1c3e-4be6-a10e-51a328002a53)
 
-The simulation files and the control are all written in Matlab/Simulink environment.  
-Hereafter you can find the lists of the contents and instrunctions on how to run the file:
+The simulation files and the control are all written in Matlab/Simulink environment.   
+Please refer to the file *contents.md* inside the simulation_files folder for a description of the files and the instructions to run the simultation. 
 
 
 
