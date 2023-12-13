@@ -1,18 +1,23 @@
-%% DYNAMIC FEEDBACK LINEARIZATION
-%% input T is delayed 
+%    begin                : November 2020
+%    authors              : Rachele Nebbia Colomba, Chiara Sammarco, Giorgio Simonini
+%    copyright            : Dipartimento di Ingegneria dell`Informazione (DII) Universita´ di pisa    
+%    email                : rachelenebbia <at> gmail <dot> com
 
+%%Description: Script to implement INPUT-OUTPUT feedback linearization
+%              Obs: Input T is delayed (first-time derivative of T is used as input)
+
+%Load setup workspace file
 run init.m
 n_sys = 8;
-
 % Variables
 syms x dx theta dtheta y dy T phi real 
 % Parameters
 syms mu_x mu_y l M grav J dphi dT real 
 
+% creation of system in state affine control form state vector
 q = [x dx theta dtheta y dy phi T]';
-% Inputs
+% Inputs with new delayed input dT
 u = [dT,dphi];
-
 f = [   
 	dx;
     (M^-1)*(-mu_x*dx) + T*M^-1*(-sin(theta+phi));
@@ -22,7 +27,6 @@ f = [
     T*M^-1*(cos(theta+phi)) + M^-1*( - mu_y*dy -M*grav);
     0;
     0]; 
-   
 g1 = [0 0 0 0 0 0 0 1]';
 g2 = [	0;
   		0;

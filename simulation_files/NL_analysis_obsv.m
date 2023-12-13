@@ -111,7 +111,7 @@ function [omega,omega_mat,r] = filtration(omega_in,omega_mat_in,delta_in,q)
             omega_mat = [omega_mat; lie_tmp];
 			r = rank(omega_mat);
             %r_new = rank(omega_mat);
-            if is_zero(lie_tmp) == 0                     % check if new vector is null
+            if is_zero(lie_tmp) == 0    % check if new vector is null
                 omega{end+1} = lie_tmp;
             else
                 omega_mat = omega_mat(1:end-1,:);
