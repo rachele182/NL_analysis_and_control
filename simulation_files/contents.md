@@ -19,7 +19,7 @@ Please refer to the following description:
     - DYN_FL.m: script used to FB-linearize the system: it contains the variables change needed and the control of the linearized system.
 
 - **How to run**:
-    1. run matlab script init.m: to setup the work space
+    1. run matlab script init.m: to setup the work space;
     2. run LIN_analysis.m, NL_analysis_contr.m, NL_analysis_obsv.m: to visualize the results of the analysis with the chosen inputs and outputs of the system;
     3. run identifacibility_NL_sys: to visualize the identificability of the chosen parameters;
     4. run Feddback_LIN.m and DYN_FL.m: to have the result of the complete input-output FB linearization of the system;
