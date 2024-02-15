@@ -7,7 +7,7 @@
 This work is a result of the final project for the Master Course "Robot Control", as part of the Robotics and Automation Master Degree at the *Universita´di Pisa*.   
 The goal is to analyse structural properties i.e *Controllability* and *Observability* of a non-linear system using two main methods:  
 1. **Linearization method** in a neighbourood of an equlibrium point;
-2. **Filtration method** to verify local observability and controllability;   
+2. **Filtration method** to verify local observability and controllability.   
 
 The latter is also used to investigate the identificability of some parameters e.g. friction coefficients.   
 After this study the results are used to design two control techniques for the dynamic system, more precisely:  

@@ -26,7 +26,7 @@ Ay_par = pi*(d_par/2)^2;                    % impact area
 rho_par = 1.225;                            % Kg/m^3 air density   
 mu_x_par = 0.5*rho_par*cdx_par*Ax_par;      % N*s/m viscous friction coefficient
 mu_y_par= 0.5*rho_par*cdy_par*Ay_par;       % N*s/m viscous friction 
-T_par =  M_par*g_par;                   	  % Nm thrusther constant propulsion 
+T_par =  M_par*g_par;                   	% Nm thrusther constant propulsion 
 % T_par = 5885; 
 n_sys = 7;                                  % system degree
 
