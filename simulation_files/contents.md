@@ -3,14 +3,14 @@
 This folder contains all the files used to study, simulate and control the non-linear  system.  
 Please refer to the following description:   
 
-- **Simulation Files**:
+-  **Simulation Files**:
     - Feedback_dyn.slx simulink: file with control of the linearized system (with Input-Output feedback linearization);
     - Feedback_dyn_outLoop.slx: simulink file containing also an outer loop to control zero dynamics; 
     - Backstepping_control.slx: simulink with backstepping control of the rocket + outer loop to stabilize x-axis dynamics;
-    - Backstepping_control.slx: simulink file with backstepping control complete with estimation of uncertain dynamic parameters i.e mass, inertia and friction coefficients.
+    - Adaptive_Backstepping_control.slx: simulink file with backstepping control complete with estimation of uncertain dynamic parameters i.e mass, inertia and friction coefficients.
 
 - **Matlab Scripts**:
-    - init.m: contain the parameters and values to seupt the workspace needed for the simulations; 
+    - init.m: contain the parameters and values to setup the workspace needed for the simulations; 
     - LIN_analysis.m: script to study the controllability and observability of the system via linearization method (sufficient but not necessary condition);
     - NL_analysis_contr.m: script to implement filtration method and study local controllability of NL system;
     - NL_analysis_obsv.m: script to implement filtration method and study local observability of NL system;
